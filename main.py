@@ -11,16 +11,20 @@ screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption("Flappy Bird")
 clock = pygame.time.Clock()
 
+# load background
+background = pygame.image.load("background.jpg")
+
+
 flag = True
 while flag:
-
-    screen.fill((0,0,0))
     
+    # add background
+    screen.blit(background,(0,0))
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             flag = False    # to exit the game
-
+    
     # for updating the screen
     pygame.display.update()   
     
