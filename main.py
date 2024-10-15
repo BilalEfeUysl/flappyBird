@@ -1,6 +1,8 @@
 import pygame
+import random 
 
 pygame.init()
+
 
 # these will determine the size of the screen
 width = 400
@@ -21,6 +23,20 @@ birdImage = pygame.image.load("bird.jpg")
 bird_x = 45
 bird_y = 250
 bird_y_change = 0
+
+pipe_width = 70
+pipe_height = random.randint(150,250)
+pipe_color = (0,255,0)
+pipe_x = 400
+pipe_x_change = -4
+
+def display_pipe(height):
+    pygame.draw.rect(screen,pipe_color,(pipe_x,0,pipe_width,height))
+
+    bottom_pipe_y = height+150
+
+    pygame.draw.rect(screen,pipe_color,(pipe_x,bottom_pipe_y,pipe_width,(550-bottom_pipe_y)))
+
 
 flag = True
 while flag:
@@ -50,6 +66,12 @@ while flag:
         bird_y = 0
     elif bird_y >= 500:
         bird_y = 500    
+
+    pipe_x += pipe_x_change
+    if pipe_x<= -10:
+        pipe_x = 400
+        pipe_height = random.randint(150,300)
+    display_pipe(pipe_height)        
 
     # add bird to screen
     screen.blit(birdImage,(bird_x,bird_y))
