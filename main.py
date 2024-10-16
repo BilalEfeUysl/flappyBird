@@ -8,6 +8,13 @@ pygame.init()
 width = 400
 height = 600
 
+# Score 
+score = 0
+scoreFont = pygame.font.Font(None,36)
+def score_display(score):
+    display = scoreFont.render(f"Score: {score}",True,(255,255,255))
+    screen.blit(display,(10,10))
+
 # defining the main settings of the game
 screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption("Flappy Bird")
@@ -24,12 +31,14 @@ bird_x = 45
 bird_y = 250
 bird_y_change = 0
 
+# pipe view
 pipe_width = 70
 pipe_height = random.randint(150,250)
 pipe_color = (0,255,0)
 pipe_x = 400
-pipe_x_change = -4
+pipe_x_change = -2
 
+# function of creating pipe
 def display_pipe(height):
     pygame.draw.rect(screen,pipe_color,(pipe_x,0,pipe_width,height))
 
@@ -37,14 +46,12 @@ def display_pipe(height):
 
     pygame.draw.rect(screen,pipe_color,(pipe_x,bottom_pipe_y,pipe_width,(550-bottom_pipe_y)))
 
-
 flag = True
 while flag:
 
     # add background to screen
     screen.blit(background,(0,0))
 
-    
     for event in pygame.event.get():
         # to exit the game
         if event.type == pygame.QUIT:
@@ -52,7 +59,7 @@ while flag:
         # when the button pressed 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                bird_y_change = -4
+                bird_y_change = -3
         # when the button is not pressed
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
@@ -67,15 +74,24 @@ while flag:
     elif bird_y >= 500:
         bird_y = 500    
 
+    # repeat of the pipe
     pipe_x += pipe_x_change
     if pipe_x<= -10:
         pipe_x = 400
         pipe_height = random.randint(150,300)
+        score += 1
     display_pipe(pipe_height)        
+
+    # control of bird touching pipes
+    if pipe_x <= 110:
+        if bird_y <= pipe_height or bird_y >= pipe_height + 101:
+            flag = False        
 
     # add bird to screen
     screen.blit(birdImage,(bird_x,bird_y))
 
+    # writing the score on the screen
+    score_display(score)   
 
     # for updating the screen
     pygame.display.update()   
